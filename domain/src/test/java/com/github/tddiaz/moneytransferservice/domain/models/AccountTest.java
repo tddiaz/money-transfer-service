@@ -1,15 +1,21 @@
 package com.github.tddiaz.moneytransferservice.domain.models;
 
 import com.github.tddiaz.moneytransferservice.domain.exceptions.CurrencyMismatchException;
+import com.github.tddiaz.moneytransferservice.domain.exceptions.DomainViolationException;
 import com.github.tddiaz.moneytransferservice.domain.exceptions.InactiveAccountException;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import static java.math.BigDecimal.TEN;
 import static java.math.BigDecimal.ZERO;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertFalse;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class AccountTest {
 
@@ -33,6 +39,14 @@ public class AccountTest {
         var amountToBeDebited = Amount.of(TEN, Currency.of("PHP"));
 
         account.debit(amountToBeDebited, AccountNumber.of("0000123456890"));
+    }
+
+    @Test(expected = DomainViolationException.class)
+    public void givenSameAccountNumber_whenDebit_shouldThrowError() {
+        var account = Account.of(AccountNumber.of("12345678901234"), USD, TEN);
+        var amountToBeDebited = Amount.of(TEN, Currency.of("PHP"));
+
+        account.debit(amountToBeDebited, AccountNumber.of("12345678901234"));
     }
 
     @Test(expected = InactiveAccountException.class)
@@ -71,6 +85,14 @@ public class AccountTest {
         account.credit(amountToBeCredited, AccountNumber.of("0000123456890"));
     }
 
+    @Test(expected = DomainViolationException.class)
+    public void givenSameAccountNumber_whenCredit_shouldThrowError() {
+        var account = Account.of(AccountNumber.of("12345678901234"), USD, TEN);
+        var amountToBeCredited = Amount.of(TEN, Currency.of("PHP"));
+
+        account.credit(amountToBeCredited, AccountNumber.of("12345678901234"));
+    }
+
     @Test(expected = InactiveAccountException.class)
     public void givenInactiveAccount_whenCredit_shouldThrowError() {
         var account = Account.of(AccountNumber.of("12345678901234"), USD, TEN);
@@ -107,4 +129,31 @@ public class AccountTest {
         assertFalse(account.isActive());
     }
 
+    @Test
+    public void testAccept() {
+        var account = Account.of(AccountNumber.of("12345678901234"), USD, TEN);
+        account.credit(Amount.of(TEN, USD), AccountNumber.of("0000123456890"));
+
+        var visitor = mock(AccountVisitor.class);
+        account.accept(visitor);
+
+        verify(visitor).setAccountNumber(eq(account.getNumber().getValue()));
+        verify(visitor).setBalance(eq(account.getBalance().getAmount()));
+        verify(visitor).setCurrency(eq(account.getCurrency().getValue()));
+
+        ArgumentCaptor<List<TransactionTemplate>> argumentCaptor = ArgumentCaptor.forClass(List.class);
+        verify(visitor).setTransactions(argumentCaptor.capture());
+
+        var txnTemplates = argumentCaptor.getValue();
+        assertThat(txnTemplates).hasSize(1);
+
+        var template = txnTemplates.get(0);
+        var transaction = account.getTransactions().get(0);
+
+        assertThat(template.getAccountId()).isNull();
+        assertThat(template.getAccountNumber()).isEqualTo(transaction.getAccountNumber().getValue());
+        assertThat(template.getBalance()).isEqualTo(transaction.getBalance().getAmount());
+        assertThat(template.getDate()).isEqualTo(transaction.getDate());
+        assertThat(template.getType()).isEqualTo(transaction.getType().name());
+    }
 }

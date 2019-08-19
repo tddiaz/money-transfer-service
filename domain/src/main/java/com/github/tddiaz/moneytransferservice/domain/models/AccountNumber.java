@@ -11,7 +11,7 @@ public class AccountNumber {
     private String value;
 
     public static AccountNumber of(String value) {
-        Validate.requireNonNull(value, "value should not be null");
+        Validate.requireNonNull(value, "account number value should not be null");
 
         return new AccountNumber(value);
     }

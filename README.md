@@ -4,7 +4,7 @@ specific fields will be saved from the consumed event. (ex. Account Number, Bala
 * The given amount that will be received by the beneficiary account is already converted base on the its currency.
 * The given amount that will be deducted from payee's account is already calculated, and is equivalent to the converted
 amount that the beneficiary account will be receiving.
-
+* For simplicity, accounts are assumed to be on the same bank and will be updated on a single transaction
 ### Technologies used
 * Java 11
 * Micronaut - 

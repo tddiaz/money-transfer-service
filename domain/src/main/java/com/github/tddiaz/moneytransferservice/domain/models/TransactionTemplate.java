@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 public interface TransactionTemplate {
     String getAccountId();
+    BigDecimal getAmount();
     String getAccountNumber();
     String getType();
     LocalDateTime getDate();

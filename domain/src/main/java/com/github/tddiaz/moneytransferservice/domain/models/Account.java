@@ -57,7 +57,7 @@ public class Account {
 
         this.balance = balance.deduct(amountToDebit);
 
-        addTransaction(Transaction.asDebit(id, beneficiaryAccountNumber, balance));
+        addTransaction(Transaction.asDebit(id, amountToDebit, beneficiaryAccountNumber, balance));
     }
 
     public void credit(Amount amountToCredit, AccountNumber payeeAccountNumber) {
@@ -73,7 +73,7 @@ public class Account {
 
         this.balance = balance.add(amountToCredit);
 
-        addTransaction(Transaction.asCredit(id, payeeAccountNumber, balance));
+        addTransaction(Transaction.asCredit(id, amountToCredit, payeeAccountNumber, balance));
     }
 
     public void deactivate() {
@@ -112,13 +112,18 @@ public class Account {
                     }
 
                     @Override
+                    public BigDecimal getAmount() {
+                        return txn.getAmount().getValue();
+                    }
+
+                    @Override
                     public String getAccountNumber() {
                         return txn.getAccountNumber().getValue();
                     }
 
                     @Override
                     public String getType() {
-                        return txn.getType().name();
+                        return txn.getTransactionType().name();
                     }
 
                     @Override

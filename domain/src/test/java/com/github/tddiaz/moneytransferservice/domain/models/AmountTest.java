@@ -1,7 +1,6 @@
 package com.github.tddiaz.moneytransferservice.domain.models;
 
-import com.github.tddiaz.moneytransferservice.domain.models.Amount;
-import com.github.tddiaz.moneytransferservice.domain.models.Currency;
+import com.github.tddiaz.moneytransferservice.domain.exceptions.InvalidAmountException;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -14,10 +13,15 @@ public class AmountTest {
 
     private static final Currency USD = Currency.of("USD");
 
+    @Test(expected = InvalidAmountException.class)
+    public void givenInvalidValue_whenCreate_shouldThrowError() {
+        Amount.of(BigDecimal.ZERO, USD);
+    }
+
     @Test
     public void givenValidValue_whenCreate_shouldCreateAmount() {
-        var amount = Amount.of(BigDecimal.TEN, USD);
-        assertThat(amount.getValue()).isEqualTo(BigDecimal.TEN);
+        var amount = Amount.of(BigDecimal.ONE, USD);
+        assertThat(amount.getValue()).isEqualTo(BigDecimal.ONE);
         assertThat(amount.getCurrency()).isEqualTo("USD");
     }
 

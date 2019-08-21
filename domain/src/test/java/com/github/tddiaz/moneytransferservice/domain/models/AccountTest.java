@@ -72,7 +72,8 @@ public class AccountTest {
 
         var transaction = account.getTransactions().get(0);
         assertThat(transaction.getAccountId()).isEqualTo(account.getId());
-        assertThat(transaction.getType()).isEqualTo(Transaction.Type.DEBIT);
+        assertThat(transaction.getAmount()).isEqualTo(amountToBeDebited);
+        assertThat(transaction.getTransactionType()).isEqualTo(TransactionType.DEBIT);
         assertThat(transaction.getAccountNumber()).isEqualTo(AccountNumber.of("0000123456890"));
         assertThat(transaction.getBalance()).isEqualTo(account.getBalance());
     }
@@ -116,7 +117,8 @@ public class AccountTest {
 
         var transaction = account.getTransactions().get(0);
         assertThat(transaction.getAccountId()).isEqualTo(account.getId());
-        assertThat(transaction.getType()).isEqualTo(Transaction.Type.CREDIT);
+        assertThat(transaction.getAmount()).isEqualTo(amountToBeCredited);
+        assertThat(transaction.getTransactionType()).isEqualTo(TransactionType.CREDIT);
         assertThat(transaction.getAccountNumber()).isEqualTo(AccountNumber.of("0000123456890"));
         assertThat(transaction.getBalance()).isEqualTo(account.getBalance());
     }
@@ -154,6 +156,6 @@ public class AccountTest {
         assertThat(template.getAccountNumber()).isEqualTo(transaction.getAccountNumber().getValue());
         assertThat(template.getBalance()).isEqualTo(transaction.getBalance().getAmount());
         assertThat(template.getDate()).isEqualTo(transaction.getDate());
-        assertThat(template.getType()).isEqualTo(transaction.getType().name());
+        assertThat(template.getType()).isEqualTo(transaction.getTransactionType().name());
     }
 }

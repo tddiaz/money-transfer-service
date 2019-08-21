@@ -66,8 +66,8 @@ public class AccountTest {
 
         account.debit(amountToBeDebited, AccountNumber.of("0000123456890"));
 
-        var expectedUpdatedBalance = Balance.of(Amount.of(ZERO, USD));
-        assertThat(account.getBalance()).isEqualTo(expectedUpdatedBalance);
+        assertThat(account.getBalance().getAmount()).isEqualTo(ZERO);
+        assertThat(account.getBalance().getCurrency()).isEqualTo(USD.getValue());
         assertThat(account.getTransactions()).hasSize(1);
 
         var transaction = account.getTransactions().get(0);

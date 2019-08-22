@@ -37,7 +37,7 @@ amount that the beneficiary account will be receiving.
 * RestAssured
 * JUnit5
 * JaCoCo
-* [vmlens](vmlens) - multithreaded testing
+* [vmlens](vmlens.com) - multithreaded testing
 
 
 ### Run the Application

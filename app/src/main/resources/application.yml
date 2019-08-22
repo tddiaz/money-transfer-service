@@ -1,3 +1,5 @@
 micronaut:
   application:
     name: money-transfer-service
+  server:
+    port: 38000

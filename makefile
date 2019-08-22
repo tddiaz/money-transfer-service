@@ -3,3 +3,6 @@ run:
 
 test:
 	./mvnw test
+
+test-report:
+	./mvnw clean package

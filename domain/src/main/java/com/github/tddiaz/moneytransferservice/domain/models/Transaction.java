@@ -1,6 +1,6 @@
 package com.github.tddiaz.moneytransferservice.domain.models;
 
-import com.github.tddiaz.moneytransferservice.domain.utils.Validate;
+import lombok.NonNull;
 import lombok.Value;
 
 import java.time.LocalDateTime;
@@ -24,21 +24,13 @@ public class Transaction {
         this.date = LocalDateTime.now();
     }
 
-    public static Transaction asDebit(AccountId accountId, Amount amount, AccountNumber beneficiaryAccountNumber, Balance balance) {
-        Validate.requireNonNull(accountId, "accountId should not be null");
-        Validate.requireNonNull(amount, "amount should not be null");
-        Validate.requireNonNull(beneficiaryAccountNumber, "beneficiaryAccountNumber should not be null");
-        Validate.requireNonNull(balance, "balance should not be null");
-
+    public static Transaction asDebit(@NonNull AccountId accountId, @NonNull Amount amount,
+                                      @NonNull AccountNumber beneficiaryAccountNumber, @NonNull Balance balance) {
         return new Transaction(accountId, amount, TransactionType.DEBIT, beneficiaryAccountNumber, balance);
     }
 
-    public static Transaction asCredit(AccountId accountId, Amount amount, AccountNumber payeeAccountNumber, Balance balance) {
-        Validate.requireNonNull(accountId, "accountId should not be null");
-        Validate.requireNonNull(amount, "amount should not be null");
-        Validate.requireNonNull(payeeAccountNumber, "payeeAccountNumber should not be null");
-        Validate.requireNonNull(balance, "balance should not be null");
-
+    public static Transaction asCredit(@NonNull AccountId accountId, @NonNull Amount amount,
+                                       @NonNull AccountNumber payeeAccountNumber, @NonNull Balance balance) {
         return new Transaction(accountId, amount, TransactionType.CREDIT, payeeAccountNumber, balance);
     }
 

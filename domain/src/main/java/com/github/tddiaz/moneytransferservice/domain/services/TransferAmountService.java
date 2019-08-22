@@ -6,7 +6,7 @@ import com.github.tddiaz.moneytransferservice.domain.models.Account;
 import com.github.tddiaz.moneytransferservice.domain.models.AccountNumber;
 import com.github.tddiaz.moneytransferservice.domain.models.Amount;
 import com.github.tddiaz.moneytransferservice.domain.repositories.AccountRepository;
-import com.github.tddiaz.moneytransferservice.domain.utils.Validate;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -17,12 +17,8 @@ public class TransferAmountService {
 
     private final AccountRepository accountRepository;
 
-    public Account transferAmount(AccountNumber payeeAccountNumber, Amount amountToDebitToPayee,
-                                  AccountNumber beneficiaryAccountNumber, Amount AmountToCreditToBeneficiary) {
-        Validate.requireNonNull(payeeAccountNumber, "payeeAccountNumber should not be null");
-        Validate.requireNonNull(amountToDebitToPayee, "amountToDebitToPayee should not be null");
-        Validate.requireNonNull(beneficiaryAccountNumber, "beneficiaryAccountNumber should not be null");
-        Validate.requireNonNull(AmountToCreditToBeneficiary, "AmountToCreditToBeneficiary should not be null");
+    public Account transferAmount(@NonNull AccountNumber payeeAccountNumber, @NonNull Amount amountToDebitToPayee,
+                                  @NonNull AccountNumber beneficiaryAccountNumber, @NonNull Amount AmountToCreditToBeneficiary) {
 
         if (Objects.equals(payeeAccountNumber, beneficiaryAccountNumber)) {
             throw new AmountTransferException("cannot perform transfer within same account");

@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 
 import static io.micronaut.http.HttpStatus.BAD_REQUEST;
+import static io.micronaut.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static io.micronaut.http.HttpStatus.OK;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -129,6 +130,20 @@ public class AccountResourceTest {
             .body("transactions[0].date", notNullValue());
 
         verify(accountService).findByAccountNumber(eq("12345678901234"));
+    }
+
+    @Test
+    public void testGenericExceptionHandler() {
+        when(accountService.findByAccountNumber(anyString())).thenThrow(new RuntimeException());
+
+        given()
+            .port(38000)
+            .contentType(ContentType.JSON)
+        .when()
+            .get(BASE_URL, "12345678901234")
+        .then()
+            .statusCode(INTERNAL_SERVER_ERROR.getCode())
+            .body("message", is("service error"));
     }
 
     private static AccountDto accountDto() {

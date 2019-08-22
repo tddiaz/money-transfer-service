@@ -62,7 +62,7 @@ public class AccountResource {
     }
 
     @Error
-    public HttpResponse handleError(HttpRequest request, Exception e) {
+    public HttpResponse handleError(HttpRequest request, Throwable e) {
         LOGGER.error("handling generic exception", e);
         return HttpResponse.serverError("{\"message\": \"service error\"}");
     }

@@ -3,9 +3,9 @@ package com.github.tddiaz.moneytransferservice.domain.models;
 import com.github.tddiaz.moneytransferservice.domain.exceptions.CurrencyMismatchException;
 import com.github.tddiaz.moneytransferservice.domain.exceptions.DomainViolationException;
 import com.github.tddiaz.moneytransferservice.domain.exceptions.InactiveAccountException;
-import com.github.tddiaz.moneytransferservice.domain.utils.Validate;
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.NonNull;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -36,18 +36,11 @@ public class Account {
         this.active = true;
     }
 
-    public static Account of(AccountNumber number, Currency currency, BigDecimal balanceValue) {
-        Validate.requireNonNull(number, "number should not be null");
-        Validate.requireNonNull(currency, "currency should not be null");
-        Validate.requireNonNull(balanceValue, "balanceValue should not be null");
-
+    public static Account of(@NonNull AccountNumber number, @NonNull Currency currency, @NonNull BigDecimal balanceValue) {
         return new Account(number, currency, Balance.of(Amount.of(balanceValue, currency)));
     }
 
-    public void debitAmount(Amount amountToDebit, AccountNumber beneficiaryAccountNumber) {
-        Validate.requireNonNull(amountToDebit, "amountToDebit should not be null");
-        Validate.requireNonNull(beneficiaryAccountNumber, "beneficiaryAccountNumber should not be null");
-
+    public void debitAmount(@NonNull Amount amountToDebit, @NonNull  AccountNumber beneficiaryAccountNumber) {
         verifyAccountNumberElseThrow(beneficiaryAccountNumber);
         verifyCurrencyOfAmountElseThrow(amountToDebit);
 
@@ -60,10 +53,7 @@ public class Account {
         addTransaction(Transaction.asDebit(id, amountToDebit, beneficiaryAccountNumber, balance));
     }
 
-    public void creditAmount(Amount amountToCredit, AccountNumber payeeAccountNumber) {
-        Validate.requireNonNull(amountToCredit, "amountToCredit should not be null");
-        Validate.requireNonNull(payeeAccountNumber, "payeeAccountNumber should not be null");
-
+    public void creditAmount(@NonNull Amount amountToCredit, @NonNull AccountNumber payeeAccountNumber) {
         verifyAccountNumberElseThrow(payeeAccountNumber);
         verifyCurrencyOfAmountElseThrow(amountToCredit);
 

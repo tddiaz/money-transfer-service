@@ -1,8 +1,8 @@
 package com.github.tddiaz.moneytransferservice.domain.models;
 
-import com.github.tddiaz.moneytransferservice.domain.utils.Validate;
 import com.github.tddiaz.moneytransferservice.domain.exceptions.InvalidCurrencyCodeException;
 import lombok.AccessLevel;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
@@ -11,8 +11,7 @@ import lombok.Value;
 public class Currency {
     private String value;
 
-    public static Currency of(String value) {
-        Validate.requireNonNull(value, "value should not be null");
+    public static Currency of(@NonNull String value) {
 
         try {
             java.util.Currency.getInstance(value);

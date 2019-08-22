@@ -1,7 +1,7 @@
 package com.github.tddiaz.moneytransferservice.domain.models;
 
-import com.github.tddiaz.moneytransferservice.domain.utils.Validate;
 import lombok.AccessLevel;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
@@ -10,9 +10,7 @@ import lombok.Value;
 public class AccountNumber {
     private String value;
 
-    public static AccountNumber of(String value) {
-        Validate.requireNonNull(value, "account number value should not be null");
-
+    public static AccountNumber of(@NonNull String value) {
         return new AccountNumber(value);
     }
 }

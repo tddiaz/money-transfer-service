@@ -31,9 +31,11 @@ public class AccountResource {
 
     private final AccountService accountService;
 
-    @Post("/transfer-amount")
-    public HttpResponse<AccountDto> transerAmount(@Valid @Body TransferAmount transferAmount) {
-        LOGGER.info("received transfer amount request. payload '{}'", transferAmount);
+    @Post("/{payeeAccountNumber}/transfer-amount")
+    public HttpResponse<AccountDto> transerAmount(String payeeAccountNumber, @Valid @Body TransferAmount transferAmount) {
+        LOGGER.info("received transfer amount request from account '{}'. payload '{}'", payeeAccountNumber, transferAmount);
+        transferAmount.setPayeeAccountNumber(payeeAccountNumber);
+
         return HttpResponse.ok(accountService.transferAmount(transferAmount));
     }
 
@@ -56,12 +58,12 @@ public class AccountResource {
     @Error
     public HttpResponse handleError(HttpRequest request, DomainViolationException e) {
         LOGGER.error("handling domain violation exception", e);
-        return HttpResponse.badRequest(e.getMessage());
+        return HttpResponse.badRequest("{\"message\": \"" + e.getMessage() + "\"}");
     }
 
     @Error
     public HttpResponse handleError(HttpRequest request, Exception e) {
         LOGGER.error("handling generic exception", e);
-        return HttpResponse.serverError("service error");
+        return HttpResponse.serverError("{\"message\": \"service error\"}");
     }
 }

@@ -1,21 +1,22 @@
 package com.github.tddiaz.moneytransferservice.domain.models;
 
 import com.github.tddiaz.moneytransferservice.domain.exceptions.InvalidAmountException;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AmountTest {
 
     private static final Currency USD = Currency.of("USD");
 
-    @Test(expected = InvalidAmountException.class)
+    @Test
     public void givenInvalidValue_whenCreate_shouldThrowError() {
-        Amount.of(BigDecimal.ZERO, USD);
+        Assertions.assertThrows(InvalidAmountException.class, () -> Amount.of(BigDecimal.ZERO, USD));
     }
 
     @Test

@@ -6,7 +6,6 @@ import com.github.tddiaz.moneytransferservice.domain.models.TransactionType;
 import lombok.Getter;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 

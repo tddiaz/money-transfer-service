@@ -7,8 +7,6 @@ amount that the beneficiary account will be receiving.
 * For simplicity, accounts are assumed to be on the same bank and will be updated on a single transaction
 ### Technologies used
 * Java 11
-* Micronaut - 
-* Lombok
-* RestAssured
+* Micronaut 
 * Mockito
-* JUnit4
+* JUnit5

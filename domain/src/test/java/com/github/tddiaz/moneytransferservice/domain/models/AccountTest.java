@@ -3,7 +3,7 @@ package com.github.tddiaz.moneytransferservice.domain.models;
 import com.github.tddiaz.moneytransferservice.domain.exceptions.CurrencyMismatchException;
 import com.github.tddiaz.moneytransferservice.domain.exceptions.DomainViolationException;
 import com.github.tddiaz.moneytransferservice.domain.exceptions.InactiveAccountException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.math.BigDecimal;
@@ -12,7 +12,8 @@ import java.util.List;
 import static java.math.BigDecimal.TEN;
 import static java.math.BigDecimal.ZERO;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -33,30 +34,30 @@ public class AccountTest {
         assertThat(account.isActive()).isTrue();
     }
 
-    @Test(expected = CurrencyMismatchException.class)
+    @Test
     public void givenAmountWithDifferentCurrency_whenDebit_shouldThrowError() {
         var account = Account.of(AccountNumber.of("12345678901234"), USD, TEN);
         var amountToBeDebited = Amount.of(TEN, Currency.of("PHP"));
 
-        account.debitAmount(amountToBeDebited, AccountNumber.of("0000123456890"));
+        assertThrows(CurrencyMismatchException.class, () -> account.debitAmount(amountToBeDebited, AccountNumber.of("0000123456890")));
     }
 
-    @Test(expected = DomainViolationException.class)
+    @Test
     public void givenSameAccountNumber_whenDebit_shouldThrowError() {
         var account = Account.of(AccountNumber.of("12345678901234"), USD, TEN);
         var amountToBeDebited = Amount.of(TEN, Currency.of("PHP"));
 
-        account.debitAmount(amountToBeDebited, AccountNumber.of("12345678901234"));
+        assertThrows(DomainViolationException.class, () ->account.debitAmount(amountToBeDebited, AccountNumber.of("12345678901234")));
     }
 
-    @Test(expected = InactiveAccountException.class)
+    @Test
     public void givenInactiveAccount_whenDebit_shouldThrowError() {
         var account = Account.of(AccountNumber.of("12345678901234"), USD, TEN);
         account.deactivate();
 
         var amountToBeDebited = Amount.of(TEN, USD);
 
-        account.debitAmount(amountToBeDebited, AccountNumber.of("0000123456890"));
+        assertThrows(InactiveAccountException.class, () -> account.debitAmount(amountToBeDebited, AccountNumber.of("0000123456890")));
     }
 
     @Test
@@ -78,30 +79,30 @@ public class AccountTest {
         assertThat(transaction.getBalance()).isEqualTo(account.getBalance());
     }
 
-    @Test(expected = CurrencyMismatchException.class)
+    @Test
     public void givenAmountWithDifferentCurrency_whenCredit_shouldThrowError() {
         var account = Account.of(AccountNumber.of("12345678901234"), USD, TEN);
         var amountToBeCredited = Amount.of(TEN, Currency.of("PHP"));
 
-        account.creditAmount(amountToBeCredited, AccountNumber.of("0000123456890"));
+        assertThrows(CurrencyMismatchException.class, () -> account.creditAmount(amountToBeCredited, AccountNumber.of("0000123456890")));
     }
 
-    @Test(expected = DomainViolationException.class)
+    @Test
     public void givenSameAccountNumber_whenCredit_shouldThrowError() {
         var account = Account.of(AccountNumber.of("12345678901234"), USD, TEN);
         var amountToBeCredited = Amount.of(TEN, Currency.of("PHP"));
 
-        account.creditAmount(amountToBeCredited, AccountNumber.of("12345678901234"));
+        assertThrows(DomainViolationException.class, () -> account.creditAmount(amountToBeCredited, AccountNumber.of("12345678901234")));
     }
 
-    @Test(expected = InactiveAccountException.class)
+    @Test
     public void givenInactiveAccount_whenCredit_shouldThrowError() {
         var account = Account.of(AccountNumber.of("12345678901234"), USD, TEN);
         account.deactivate();
 
         var amountToBeCredited = Amount.of(TEN, USD);
 
-        account.creditAmount(amountToBeCredited, AccountNumber.of("0000123456890"));
+        assertThrows(InactiveAccountException.class, () -> account.creditAmount(amountToBeCredited, AccountNumber.of("0000123456890")));
     }
 
     @Test

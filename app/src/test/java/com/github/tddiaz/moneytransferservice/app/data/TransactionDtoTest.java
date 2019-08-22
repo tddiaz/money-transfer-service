@@ -2,7 +2,7 @@ package com.github.tddiaz.moneytransferservice.app.data;
 
 import com.github.tddiaz.moneytransferservice.domain.models.TransactionTemplate;
 import com.github.tddiaz.moneytransferservice.domain.models.TransactionType;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

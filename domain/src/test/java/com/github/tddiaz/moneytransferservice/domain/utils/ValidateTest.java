@@ -1,12 +1,14 @@
 package com.github.tddiaz.moneytransferservice.domain.utils;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ValidateTest {
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void givenNullValue_whenValidate_shouldThrowError() {
-        Validate.requireNonNull(null, "error message");
+        assertThrows(IllegalArgumentException.class, () -> Validate.requireNonNull(null, "error message"));
     }
 
 }

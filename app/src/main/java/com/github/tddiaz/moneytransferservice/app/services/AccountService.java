@@ -8,11 +8,13 @@ import com.github.tddiaz.moneytransferservice.domain.models.Amount;
 import com.github.tddiaz.moneytransferservice.domain.models.Currency;
 import com.github.tddiaz.moneytransferservice.domain.repositories.AccountRepository;
 import com.github.tddiaz.moneytransferservice.domain.services.TransferAmountService;
+import io.micronaut.context.annotation.Requires;
 import lombok.RequiredArgsConstructor;
 
 import javax.inject.Singleton;
 
 @Singleton
+@Requires(classes = {TransferAmountService.class, AccountRepository.class})
 @RequiredArgsConstructor
 public class AccountService {
 

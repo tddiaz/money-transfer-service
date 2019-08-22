@@ -1,16 +1,16 @@
 package com.github.tddiaz.moneytransferservice.domain.models;
 
 import com.github.tddiaz.moneytransferservice.domain.exceptions.InvalidCurrencyCodeException;
-import com.github.tddiaz.moneytransferservice.domain.models.Currency;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CurrencyTest {
 
-    @Test(expected = InvalidCurrencyCodeException.class)
+    @Test
     public void givenInvalidCurrencyCode_whenCreate_shouldThrowError() {
-        Currency.of("invalid");
+        assertThrows(InvalidCurrencyCodeException.class, () -> Currency.of("invalid"));
     }
 
     @Test

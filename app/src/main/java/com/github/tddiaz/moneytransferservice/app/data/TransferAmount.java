@@ -1,21 +1,20 @@
 package com.github.tddiaz.moneytransferservice.app.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.micronaut.core.annotation.Introspected;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Introspected
-@Getter
-@Setter
+@Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TransferAmount {
 
-    @NotBlank(message = "Payee account number is required")
+    @JsonIgnore
     private String payeeAccountNumber;
 
     @NotNull(message = "Amount to debit is required")
@@ -32,16 +31,4 @@ public class TransferAmount {
 
     @NotBlank(message = "Currency of amount to credit is required")
     private String amountToCreditCurrency;
-
-    @Override
-    public String toString() {
-        return "TransferAmount{" +
-                "payeeAccountNumber='" + payeeAccountNumber + '\'' +
-                ", amountToDebitValue=" + amountToDebitValue +
-                ", amountToDebitCurrency='" + amountToDebitCurrency + '\'' +
-                ", beneficiaryAccountNumber='" + beneficiaryAccountNumber + '\'' +
-                ", amountToCreditValue=" + amountToCreditValue +
-                ", amountToCreditCurrency='" + amountToCreditCurrency + '\'' +
-                '}';
-    }
 }

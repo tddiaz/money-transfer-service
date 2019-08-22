@@ -8,15 +8,16 @@ import com.github.tddiaz.moneytransferservice.domain.models.Amount;
 import com.github.tddiaz.moneytransferservice.domain.models.Currency;
 import com.github.tddiaz.moneytransferservice.domain.repositories.AccountRepository;
 import org.assertj.core.api.Assertions;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
@@ -25,7 +26,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class TransferAmountServiceTest {
 
     @Mock
@@ -39,20 +40,22 @@ public class TransferAmountServiceTest {
     private static final AccountNumber PAYEE_ACCOUNT_NUMBER = AccountNumber.of("12345678901010");
     private static final AccountNumber BENEFICIARY_ACCOUNT_NUMBER = AccountNumber.of("09876543211234");
 
-    @Test(expected = AmountTransferException.class)
+    @Test
     public void givenSameAccountNumber_whenTransferAmount_shouldThrowError() {
-        transferAmountService.transferAmount(PAYEE_ACCOUNT_NUMBER, AMOUNT_TO_DEBIT, PAYEE_ACCOUNT_NUMBER, AMOUNT_TO_CREDIT);
+        assertThrows(AmountTransferException.class, () ->
+                transferAmountService.transferAmount(PAYEE_ACCOUNT_NUMBER, AMOUNT_TO_DEBIT, PAYEE_ACCOUNT_NUMBER, AMOUNT_TO_CREDIT));
     }
 
-    @Test(expected = AmountTransferException.class)
+    @Test
     public void givenInvalidPayeeAccountNumber_whenTransferAmount_shouldThrowError() {
         when(accountRepository.findByAccountNumber(eq(PAYEE_ACCOUNT_NUMBER)))
                 .thenReturn(Optional.empty());
 
-        transferAmountService.transferAmount(PAYEE_ACCOUNT_NUMBER, AMOUNT_TO_DEBIT, BENEFICIARY_ACCOUNT_NUMBER, AMOUNT_TO_CREDIT);
+        assertThrows(AmountTransferException.class, () ->
+                transferAmountService.transferAmount(PAYEE_ACCOUNT_NUMBER, AMOUNT_TO_DEBIT, BENEFICIARY_ACCOUNT_NUMBER, AMOUNT_TO_CREDIT));
     }
 
-    @Test(expected = AmountTransferException.class)
+    @Test
     public void givenInvalidBeneficiaryAccountNumber_whenTransferAmount_shouldThrowError() {
         when(accountRepository.findByAccountNumber(eq(PAYEE_ACCOUNT_NUMBER)))
                 .thenReturn(Optional.of(mock(Account.class)));
@@ -60,10 +63,11 @@ public class TransferAmountServiceTest {
         when(accountRepository.findByAccountNumber(eq(BENEFICIARY_ACCOUNT_NUMBER)))
                 .thenReturn(Optional.empty());
 
-        transferAmountService.transferAmount(PAYEE_ACCOUNT_NUMBER, AMOUNT_TO_DEBIT, BENEFICIARY_ACCOUNT_NUMBER, AMOUNT_TO_CREDIT);
+        assertThrows(AmountTransferException.class, () ->
+                transferAmountService.transferAmount(PAYEE_ACCOUNT_NUMBER, AMOUNT_TO_DEBIT, BENEFICIARY_ACCOUNT_NUMBER, AMOUNT_TO_CREDIT));
     }
 
-    @Test(expected = AmountTransferException.class)
+    @Test
     public void whenTransferAmountAndModelErrorOccurred_shouldThrowAmountTransferError() {
         var payeeAccount = mock(Account.class);
         doThrow(InsufficientFundsException.class).when(payeeAccount).debitAmount(any(), any());
@@ -74,7 +78,8 @@ public class TransferAmountServiceTest {
         when(accountRepository.findByAccountNumber(BENEFICIARY_ACCOUNT_NUMBER))
                 .thenReturn(Optional.of(beneficiaryAccount));
 
-        transferAmountService.transferAmount(PAYEE_ACCOUNT_NUMBER, AMOUNT_TO_DEBIT, BENEFICIARY_ACCOUNT_NUMBER, AMOUNT_TO_CREDIT);
+        assertThrows(AmountTransferException.class, () ->
+                transferAmountService.transferAmount(PAYEE_ACCOUNT_NUMBER, AMOUNT_TO_DEBIT, BENEFICIARY_ACCOUNT_NUMBER, AMOUNT_TO_CREDIT));
     }
 
     @Test

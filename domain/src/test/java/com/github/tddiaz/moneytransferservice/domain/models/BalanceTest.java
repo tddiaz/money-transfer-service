@@ -1,14 +1,12 @@
 package com.github.tddiaz.moneytransferservice.domain.models;
 
 import com.github.tddiaz.moneytransferservice.domain.exceptions.InsufficientFundsException;
-import com.github.tddiaz.moneytransferservice.domain.models.Amount;
-import com.github.tddiaz.moneytransferservice.domain.models.Balance;
-import com.github.tddiaz.moneytransferservice.domain.models.Currency;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class BalanceTest {
 
@@ -21,10 +19,10 @@ public class BalanceTest {
         assertThat(balance.getCurrency()).isEqualTo("USD");
     }
 
-    @Test(expected = InsufficientFundsException.class)
+    @Test
     public void givenLargerAmount_whenDeduct_shouldThrowError() {
         var balance = Balance.of(Amount.of(BigDecimal.TEN, USD));
-        balance.deduct(Amount.of(BigDecimal.valueOf(11L), USD));
+        assertThrows(InsufficientFundsException.class, () -> balance.deduct(Amount.of(BigDecimal.valueOf(11L), USD)));
     }
 
     @Test

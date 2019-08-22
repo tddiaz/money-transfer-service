@@ -19,6 +19,7 @@ amount that the beneficiary account will be receiving.
 * AssertJ
 * RestAssured
 * JUnit5
+* JaCoCo
 
 
 ### Run the Application
@@ -126,6 +127,39 @@ Preloaded data to play around with
     
 Go to `money-transfer-service/app/src/main/java/com/github/tddiaz/moneytransferservice/app/DataBootstrap.java` class to add/modify the preloaded data 
 
+
+### Code Coverage
+
+**JaCoCo** is the code coverage tool used to generate coverage report.
+
+Code Coverage ratio is set to **90** percent
+
+     <configuration>
+        <rules>
+            <rule>
+                <element>PACKAGE</element>
+                <limits>
+                    <limit>
+                        <counter>LINE</counter>
+                        <value>COVEREDRATIO</value>
+                        <minimum>0.9</minimum>
+                    </limit>
+                </limits>
+            </rule>
+        </rules>
+    </configuration>
+
+To generate the report:
+```
+make test-report
+```
+And open the generated reports html file to a browser
+```
+app/target/test-report/index.html
+```
+```
+domain/target/test-report/index.html
+```
 
 ### Test Snippets
 #### AccountResourceTest

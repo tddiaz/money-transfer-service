@@ -39,6 +39,9 @@ amount that the beneficiary account will be receiving.
 * JaCoCo
 * [vmlens](http://vmlens.com/) - multithreaded testing
 
+### Practices applied
+* DDD (Domain Driven Design)
+* TDD (Test Driven Development)
 
 ### Run the Application
 

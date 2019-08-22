@@ -24,7 +24,7 @@ class HashMapAccountRepository implements AccountRepository {
 
     @Override
     public Account save(Account account) {
-        LOGGER.info("inserting account: {}", account);
+        LOGGER.info("saving account: {}", account);
         ACCOUNTS.put(account.getNumber().getValue(), account);
         return account;
     }

@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TransactionTest {
+class TransactionTest {
 
     private static final AccountId accountId = AccountId.create();
     private static final AccountNumber accountNumber = AccountNumber.of("12345678901234");
@@ -14,7 +14,7 @@ public class TransactionTest {
     private static final Amount amount = Amount.of(BigDecimal.TEN, Currency.of("USD"));
 
     @Test
-    public void givenValidParams_whenCreateAsDebit_shouldCreateTransaction() {
+    void givenValidParams_whenCreateAsDebit_shouldCreateTransaction() {
         var transaction = Transaction.asDebit(accountId, amount, accountNumber, balance);
         assertThat(transaction.getTransactionType()).isEqualTo(TransactionType.DEBIT);
         assertThat(transaction.getAccountId()).isEqualTo(accountId);
@@ -25,7 +25,7 @@ public class TransactionTest {
     }
 
     @Test
-    public void givenValidParams_whenCreateAsCredit_shouldCreateTransaction() {
+    void givenValidParams_whenCreateAsCredit_shouldCreateTransaction() {
         var transaction = Transaction.asCredit(accountId, amount, accountNumber, balance);
         assertThat(transaction.getTransactionType()).isEqualTo(TransactionType.CREDIT);
         assertThat(transaction.getAccountId()).isEqualTo(accountId);

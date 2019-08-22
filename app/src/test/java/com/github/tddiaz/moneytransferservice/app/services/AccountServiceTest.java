@@ -23,7 +23,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class AccountServiceTest {
+class AccountServiceTest {
 
     @Mock
     private AccountRepository accountRepository;
@@ -35,8 +35,8 @@ public class AccountServiceTest {
     private AccountService accountService;
 
     @Test
-    public void givenValidParams_whenTransferAmount_shouldReturnAccountDto() {
-        when(transferAmountService.transferAmount(any(), any(), any(), any())).thenReturn(TestData.usdAccount_1());
+    void givenValidParams_whenTransferAmount_shouldReturnAccountDto() {
+        when(transferAmountService.transferAmount(any(), any(), any(), any())).thenReturn(TestData.usdAccount());
 
         var transferAmount = TestData.validTransferAmountCommand();
         var accountDto = accountService.transferAmount(transferAmount);
@@ -51,7 +51,7 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void givenInvalidAccountNumber_whenFindByAccountNumber_shouldThrowError() {
+    void givenInvalidAccountNumber_whenFindByAccountNumber_shouldThrowError() {
         when(accountRepository.findByAccountNumber(any(AccountNumber.class))).thenReturn(Optional.empty());
         assertThrows(AccountNotFoundException.class, () -> {
             accountService.findByAccountNumber("12341234567890");
@@ -59,7 +59,7 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void givenValidAccountNumber_whenFindByAccountNumber_shouldReturnAccountDto() {
+    void givenValidAccountNumber_whenFindByAccountNumber_shouldReturnAccountDto() {
         when(accountRepository.findByAccountNumber(any(AccountNumber.class))).thenReturn(Optional.of(TestData.phpAccount()));
         var accountDto = accountService.findByAccountNumber("12341234567890");
         assertNotNull(accountDto);

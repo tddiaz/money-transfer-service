@@ -18,12 +18,12 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class AccountTest {
+class AccountTest {
 
     private static final Currency USD = Currency.of("USD");
 
     @Test
-    public void givenValidParams_whenCreate_shouldCreateAccount() {
+    void givenValidParams_whenCreate_shouldCreateAccount() {
         var account = Account.of(AccountNumber.of("12345678901234"), USD, TEN);
 
         assertThat(account.getNumber().getValue()).isEqualTo("12345678901234");
@@ -35,7 +35,7 @@ public class AccountTest {
     }
 
     @Test
-    public void givenAmountWithDifferentCurrency_whenDebit_shouldThrowError() {
+    void givenAmountWithDifferentCurrency_whenDebit_shouldThrowError() {
         var account = Account.of(AccountNumber.of("12345678901234"), USD, TEN);
         var amountToBeDebited = Amount.of(TEN, Currency.of("PHP"));
 
@@ -43,7 +43,7 @@ public class AccountTest {
     }
 
     @Test
-    public void givenSameAccountNumber_whenDebit_shouldThrowError() {
+    void givenSameAccountNumber_whenDebit_shouldThrowError() {
         var account = Account.of(AccountNumber.of("12345678901234"), USD, TEN);
         var amountToBeDebited = Amount.of(TEN, Currency.of("PHP"));
 
@@ -51,7 +51,7 @@ public class AccountTest {
     }
 
     @Test
-    public void givenInactiveAccount_whenDebit_shouldThrowError() {
+    void givenInactiveAccount_whenDebit_shouldThrowError() {
         var account = Account.of(AccountNumber.of("12345678901234"), USD, TEN);
         account.deactivate();
 
@@ -61,7 +61,7 @@ public class AccountTest {
     }
 
     @Test
-    public void givenValidAmountAndActiveAccount_whenDebit_shouldUpdateBalance() {
+    void givenValidAmountAndActiveAccount_whenDebit_shouldUpdateBalance() {
         var account = Account.of(AccountNumber.of("12345678901234"), USD, TEN);
         var amountToBeDebited = Amount.of(TEN, USD);
 
@@ -80,7 +80,7 @@ public class AccountTest {
     }
 
     @Test
-    public void givenAmountWithDifferentCurrency_whenCredit_shouldThrowError() {
+    void givenAmountWithDifferentCurrency_whenCredit_shouldThrowError() {
         var account = Account.of(AccountNumber.of("12345678901234"), USD, TEN);
         var amountToBeCredited = Amount.of(TEN, Currency.of("PHP"));
 
@@ -88,7 +88,7 @@ public class AccountTest {
     }
 
     @Test
-    public void givenSameAccountNumber_whenCredit_shouldThrowError() {
+    void givenSameAccountNumber_whenCredit_shouldThrowError() {
         var account = Account.of(AccountNumber.of("12345678901234"), USD, TEN);
         var amountToBeCredited = Amount.of(TEN, Currency.of("PHP"));
 
@@ -96,7 +96,7 @@ public class AccountTest {
     }
 
     @Test
-    public void givenInactiveAccount_whenCredit_shouldThrowError() {
+    void givenInactiveAccount_whenCredit_shouldThrowError() {
         var account = Account.of(AccountNumber.of("12345678901234"), USD, TEN);
         account.deactivate();
 
@@ -106,7 +106,7 @@ public class AccountTest {
     }
 
     @Test
-    public void givenValidAmountAndActiveAccount_whenCredit_shouldUpdateBalance() {
+    void givenValidAmountAndActiveAccount_whenCredit_shouldUpdateBalance() {
         var account = Account.of(AccountNumber.of("12345678901234"), USD, TEN);
         var amountToBeCredited = Amount.of(TEN, USD);
 
@@ -125,7 +125,7 @@ public class AccountTest {
     }
 
     @Test
-    public void givenActiveAccount_whenDeactivate_shouldMarkAccountAsInactive() {
+    void givenActiveAccount_whenDeactivate_shouldMarkAccountAsInactive() {
         var account = Account.of(AccountNumber.of("12345678901234"), USD, TEN);
         account.deactivate();
 
@@ -133,7 +133,7 @@ public class AccountTest {
     }
 
     @Test
-    public void testAccept() {
+    void testAccept() {
         var account = Account.of(AccountNumber.of("12345678901234"), USD, TEN);
         account.creditAmount(Amount.of(TEN, USD), AccountNumber.of("0000123456890"));
 

@@ -6,10 +6,10 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class AccountDtoTest {
+class AccountDtoTest {
 
     @Test
-    public void testCreate() {
+    void testCreate() {
         var account = TestData.phpAccount();
         var accountDto = new AccountDto();
         account.accept(accountDto);

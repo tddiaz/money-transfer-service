@@ -4,10 +4,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class ValidateTest {
+class ValidateTest {
 
     @Test
-    public void givenNullValue_whenValidate_shouldThrowError() {
+    void givenNullValue_whenValidate_shouldThrowError() {
         assertThrows(IllegalArgumentException.class, () -> Validate.requireNonNull(null, "error message"));
     }
 

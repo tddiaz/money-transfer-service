@@ -14,12 +14,8 @@ public class TestData {
     private static final Currency USD = Currency.of("USD");
     private static final Currency PHP = Currency.of("PHP");
 
-    public static Account usdAccount_1() {
+    public static Account usdAccount() {
         return Account.of(AccountNumber.of("12345678901234"), USD, TEN);
-    }
-
-    public static Account usdAccount_2() {
-        return Account.of(AccountNumber.of("12345678900000"), USD, TEN);
     }
 
     public static Account phpAccount() {

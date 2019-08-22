@@ -9,10 +9,10 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TransactionDtoTest {
+class TransactionDtoTest {
 
     @Test
-    public void givenCreditTransactionTemplate_whenCreate_shouldSetPayeeAccountNumber() {
+    void givenCreditTransactionTemplate_whenCreate_shouldSetPayeeAccountNumber() {
         var template = creditTemplate();
         var transactionDto = TransactionDto.valueOf(template);
 
@@ -25,7 +25,7 @@ public class TransactionDtoTest {
     }
 
     @Test
-    public void givenDebitTransactionTemplate_whenCreate_shouldSetBeneficiaryAccountNumber() {
+    void givenDebitTransactionTemplate_whenCreate_shouldSetBeneficiaryAccountNumber() {
         var template = debitTemplate();
         var transactionDto = TransactionDto.valueOf(template);
 

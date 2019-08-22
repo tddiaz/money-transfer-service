@@ -27,7 +27,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class TransferAmountServiceTest {
+class TransferAmountServiceTest {
 
     @Mock
     private AccountRepository accountRepository;
@@ -41,13 +41,13 @@ public class TransferAmountServiceTest {
     private static final AccountNumber BENEFICIARY_ACCOUNT_NUMBER = AccountNumber.of("09876543211234");
 
     @Test
-    public void givenSameAccountNumber_whenTransferAmount_shouldThrowError() {
+    void givenSameAccountNumber_whenTransferAmount_shouldThrowError() {
         assertThrows(AmountTransferException.class, () ->
                 transferAmountService.transferAmount(PAYEE_ACCOUNT_NUMBER, AMOUNT_TO_DEBIT, PAYEE_ACCOUNT_NUMBER, AMOUNT_TO_CREDIT));
     }
 
     @Test
-    public void givenInvalidPayeeAccountNumber_whenTransferAmount_shouldThrowError() {
+    void givenInvalidPayeeAccountNumber_whenTransferAmount_shouldThrowError() {
         when(accountRepository.findByAccountNumber(eq(PAYEE_ACCOUNT_NUMBER)))
                 .thenReturn(Optional.empty());
 
@@ -56,7 +56,7 @@ public class TransferAmountServiceTest {
     }
 
     @Test
-    public void givenInvalidBeneficiaryAccountNumber_whenTransferAmount_shouldThrowError() {
+    void givenInvalidBeneficiaryAccountNumber_whenTransferAmount_shouldThrowError() {
         when(accountRepository.findByAccountNumber(eq(PAYEE_ACCOUNT_NUMBER)))
                 .thenReturn(Optional.of(mock(Account.class)));
 
@@ -68,7 +68,7 @@ public class TransferAmountServiceTest {
     }
 
     @Test
-    public void whenTransferAmountAndModelErrorOccurred_shouldThrowAmountTransferError() {
+    void whenTransferAmountAndModelErrorOccurred_shouldThrowAmountTransferError() {
         var payeeAccount = mock(Account.class);
         doThrow(InsufficientFundsException.class).when(payeeAccount).debitAmount(any(), any());
         when(accountRepository.findByAccountNumber(PAYEE_ACCOUNT_NUMBER))
@@ -83,7 +83,7 @@ public class TransferAmountServiceTest {
     }
 
     @Test
-    public void givenValidParams_whenTransferAmount_shouldReturnPayeeAccount() {
+    void givenValidParams_whenTransferAmount_shouldReturnPayeeAccount() {
         var payeeAccount = mock(Account.class);
         when(accountRepository.findByAccountNumber(PAYEE_ACCOUNT_NUMBER))
                 .thenReturn(Optional.of(payeeAccount));

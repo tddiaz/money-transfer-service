@@ -10,24 +10,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AmountTest {
+class AmountTest {
 
     private static final Currency USD = Currency.of("USD");
 
     @Test
-    public void givenInvalidValue_whenCreate_shouldThrowError() {
+    void givenInvalidValue_whenCreate_shouldThrowError() {
         Assertions.assertThrows(InvalidAmountException.class, () -> Amount.of(BigDecimal.ZERO, USD));
     }
 
     @Test
-    public void givenValidValue_whenCreate_shouldCreateAmount() {
+    void givenValidValue_whenCreate_shouldCreateAmount() {
         var amount = Amount.of(BigDecimal.ONE, USD);
         assertThat(amount.getValue()).isEqualTo(BigDecimal.ONE);
         assertThat(amount.getCurrency()).isEqualTo("USD");
     }
 
     @Test
-    public void givenAmount_whenSubtract_shouldReturnNewAmount() {
+    void givenAmount_whenSubtract_shouldReturnNewAmount() {
         var amount1 = Amount.of(BigDecimal.TEN, USD);
         var amount2 = Amount.of(BigDecimal.ONE, USD);
 
@@ -37,7 +37,7 @@ public class AmountTest {
     }
 
     @Test
-    public void givenAmount_whenAdd_shouldReturnNewAmount() {
+    void givenAmount_whenAdd_shouldReturnNewAmount() {
         var amount1 = Amount.of(BigDecimal.TEN, USD);
         var amount2 = Amount.of(BigDecimal.ONE, USD);
 
@@ -47,7 +47,7 @@ public class AmountTest {
     }
 
     @Test
-    public void testIsLessThan() {
+    void testIsLessThan() {
         var amount1 = Amount.of(BigDecimal.ONE, USD);
         var amount2 = Amount.of(BigDecimal.valueOf(2L), USD);
 

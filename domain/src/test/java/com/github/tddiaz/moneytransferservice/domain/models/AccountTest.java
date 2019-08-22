@@ -38,7 +38,7 @@ public class AccountTest {
         var account = Account.of(AccountNumber.of("12345678901234"), USD, TEN);
         var amountToBeDebited = Amount.of(TEN, Currency.of("PHP"));
 
-        account.debit(amountToBeDebited, AccountNumber.of("0000123456890"));
+        account.debitAmount(amountToBeDebited, AccountNumber.of("0000123456890"));
     }
 
     @Test(expected = DomainViolationException.class)
@@ -46,7 +46,7 @@ public class AccountTest {
         var account = Account.of(AccountNumber.of("12345678901234"), USD, TEN);
         var amountToBeDebited = Amount.of(TEN, Currency.of("PHP"));
 
-        account.debit(amountToBeDebited, AccountNumber.of("12345678901234"));
+        account.debitAmount(amountToBeDebited, AccountNumber.of("12345678901234"));
     }
 
     @Test(expected = InactiveAccountException.class)
@@ -56,7 +56,7 @@ public class AccountTest {
 
         var amountToBeDebited = Amount.of(TEN, USD);
 
-        account.debit(amountToBeDebited, AccountNumber.of("0000123456890"));
+        account.debitAmount(amountToBeDebited, AccountNumber.of("0000123456890"));
     }
 
     @Test
@@ -64,7 +64,7 @@ public class AccountTest {
         var account = Account.of(AccountNumber.of("12345678901234"), USD, TEN);
         var amountToBeDebited = Amount.of(TEN, USD);
 
-        account.debit(amountToBeDebited, AccountNumber.of("0000123456890"));
+        account.debitAmount(amountToBeDebited, AccountNumber.of("0000123456890"));
 
         assertThat(account.getBalance().getAmount()).isEqualTo(ZERO);
         assertThat(account.getBalance().getCurrency()).isEqualTo(USD.getValue());
@@ -83,7 +83,7 @@ public class AccountTest {
         var account = Account.of(AccountNumber.of("12345678901234"), USD, TEN);
         var amountToBeCredited = Amount.of(TEN, Currency.of("PHP"));
 
-        account.credit(amountToBeCredited, AccountNumber.of("0000123456890"));
+        account.creditAmount(amountToBeCredited, AccountNumber.of("0000123456890"));
     }
 
     @Test(expected = DomainViolationException.class)
@@ -91,7 +91,7 @@ public class AccountTest {
         var account = Account.of(AccountNumber.of("12345678901234"), USD, TEN);
         var amountToBeCredited = Amount.of(TEN, Currency.of("PHP"));
 
-        account.credit(amountToBeCredited, AccountNumber.of("12345678901234"));
+        account.creditAmount(amountToBeCredited, AccountNumber.of("12345678901234"));
     }
 
     @Test(expected = InactiveAccountException.class)
@@ -101,7 +101,7 @@ public class AccountTest {
 
         var amountToBeCredited = Amount.of(TEN, USD);
 
-        account.credit(amountToBeCredited, AccountNumber.of("0000123456890"));
+        account.creditAmount(amountToBeCredited, AccountNumber.of("0000123456890"));
     }
 
     @Test
@@ -109,7 +109,7 @@ public class AccountTest {
         var account = Account.of(AccountNumber.of("12345678901234"), USD, TEN);
         var amountToBeCredited = Amount.of(TEN, USD);
 
-        account.credit(amountToBeCredited, AccountNumber.of("0000123456890"));
+        account.creditAmount(amountToBeCredited, AccountNumber.of("0000123456890"));
 
         var expectedUpdatedBalance = Balance.of(Amount.of(BigDecimal.valueOf(20L), USD));
         assertThat(account.getBalance()).isEqualTo(expectedUpdatedBalance);
@@ -134,7 +134,7 @@ public class AccountTest {
     @Test
     public void testAccept() {
         var account = Account.of(AccountNumber.of("12345678901234"), USD, TEN);
-        account.credit(Amount.of(TEN, USD), AccountNumber.of("0000123456890"));
+        account.creditAmount(Amount.of(TEN, USD), AccountNumber.of("0000123456890"));
 
         var visitor = mock(AccountVisitor.class);
         account.accept(visitor);

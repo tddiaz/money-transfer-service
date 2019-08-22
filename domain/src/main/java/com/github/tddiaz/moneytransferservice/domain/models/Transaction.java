@@ -41,4 +41,16 @@ public class Transaction {
 
         return new Transaction(accountId, amount, TransactionType.CREDIT, payeeAccountNumber, balance);
     }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "accountId=" + accountId +
+                ", amount=" + amount +
+                ", transactionType=" + transactionType +
+                ", accountNumber=" + accountNumber +
+                ", balance=" + balance +
+                ", date=" + date +
+                '}';
+    }
 }

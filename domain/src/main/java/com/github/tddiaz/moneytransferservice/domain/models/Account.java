@@ -44,7 +44,7 @@ public class Account {
         return new Account(number, currency, Balance.of(Amount.of(balanceValue, currency)));
     }
 
-    public void debit(Amount amountToDebit, AccountNumber beneficiaryAccountNumber) {
+    public void debitAmount(Amount amountToDebit, AccountNumber beneficiaryAccountNumber) {
         Validate.requireNonNull(amountToDebit, "amountToDebit should not be null");
         Validate.requireNonNull(beneficiaryAccountNumber, "beneficiaryAccountNumber should not be null");
 
@@ -60,7 +60,7 @@ public class Account {
         addTransaction(Transaction.asDebit(id, amountToDebit, beneficiaryAccountNumber, balance));
     }
 
-    public void credit(Amount amountToCredit, AccountNumber payeeAccountNumber) {
+    public void creditAmount(Amount amountToCredit, AccountNumber payeeAccountNumber) {
         Validate.requireNonNull(amountToCredit, "amountToCredit should not be null");
         Validate.requireNonNull(payeeAccountNumber, "payeeAccountNumber should not be null");
 

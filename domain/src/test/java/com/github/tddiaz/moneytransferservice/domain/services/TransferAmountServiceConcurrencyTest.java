@@ -32,10 +32,21 @@ public class TransferAmountServiceConcurrencyTest {
 
     @Test
     @ThreadCount(50)
-    public void test() {
+    public void test1_payeeAs12340987654321_beneficiaryAs09876543214321() {
         var payee = AccountNumber.of("12340987654321");
         var amountToDebit = Amount.of(BigDecimal.valueOf(100L), Currency.of("GBP"));
         var beneficiary = AccountNumber.of("09876543214321");
+        var amountToCredit = Amount.of(BigDecimal.valueOf(100L), Currency.of("GBP"));
+
+        transferAmountService.transferAmount(payee, amountToDebit, beneficiary, amountToCredit);
+    }
+
+    @Test
+    @ThreadCount(50)
+    public void test2_payeeAs09876543214321_beneficiaryAs12340987654321() {
+        var payee = AccountNumber.of("09876543214321");
+        var amountToDebit = Amount.of(BigDecimal.valueOf(100L), Currency.of("GBP"));
+        var beneficiary = AccountNumber.of("12340987654321");
         var amountToCredit = Amount.of(BigDecimal.valueOf(100L), Currency.of("GBP"));
 
         transferAmountService.transferAmount(payee, amountToDebit, beneficiary, amountToCredit);
@@ -45,10 +56,10 @@ public class TransferAmountServiceConcurrencyTest {
     @After
     public void testCount() {
         var payeeAccount = accountRepository.findByAccountNumber(AccountNumber.of("12340987654321")).get();
-        assertThat(payeeAccount.getBalance().getAmount()).isEqualTo(BigDecimal.ZERO);
+        assertThat(payeeAccount.getBalance().getAmount()).isEqualTo(BigDecimal.valueOf(5000));
 
         var beneficiaryAccount = accountRepository.findByAccountNumber(AccountNumber.of("09876543214321")).get();
-        assertThat(beneficiaryAccount.getBalance().getAmount()).isEqualTo(BigDecimal.valueOf(10000));
+        assertThat(beneficiaryAccount.getBalance().getAmount()).isEqualTo(BigDecimal.valueOf(5000));
     }
 
     private class AccountRepositoryImpl implements AccountRepository {

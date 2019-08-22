@@ -32,37 +32,30 @@ This will test and package the application and will run the executable jar
 ### APIs
 
 #### Transfer Amount
-API specs for transferring amount between accounts
-
 ##### Sample Request
 
     $ curl 'http://localhost:38000/accounts/78901234567890/transfer-amount' -i -X POST \
         -H 'Content-Type: application/json' \
         -d '{
-      	"amountToDebitValue": "100",
+      	"amountToDebitValue": 100,
       	"amountToDebitCurrency": "USD",
       	"beneficiaryAccountNumber": "12340987654321",
-      	"amountToCreditValue": "80",
+      	"amountToCreditValue": 80,
       	"amountToCreditCurrency": "GBP"
     }' 
-
 ##### Path Parameters 
     /accounts/{payeeAccountNumber}/transfer-amount
-| Parameter             | Description             |
-| :---                  | :---                    |
-| `payeeAccountNumber`  | Payee's account number  |
-
 ##### Request Body
     {
-        "amountToDebitValue": "200",
+        "amountToDebitValue": 100,
         "amountToDebitCurrency": "USD",
         "beneficiaryAccountNumber": "12340987654321",
-        "amountToCreditValue": "200",
+        "amountToCreditValue": 80,
         "amountToCreditCurrency": "GBP"
     }
     
 ##### Example Response
-    HTTP/1.1 201 Created
+    HTTP/1.1 200 OK
     Content-Length: 478
     Content-Type: application/json;charset=UTF-8
     
@@ -89,7 +82,40 @@ API specs for transferring amount between accounts
     }
 
 #### Get Account
+##### Sample Request
+    $ curl 'http://localhost:38000/accounts/78901234567890' -i -X GET \
+        -H 'Content-Type: application/json'
+
+##### Path Parameters 
+    /accounts/{accountNumber}/transfer-amount
+
+##### Example Response
+    HTTP/1.1 200 OK
+    Content-Length: 478
+    Content-Type: application/json;charset=UTF-8
     
+    {
+        "accountNumber": "78901234567890",
+        "currency": "USD",
+        "balance": 4980,
+        "transactions": [
+            {
+                "amount": 80,
+                "payeeAccountNumber": "12340987654321",
+                "transactionType": "CREDIT",
+                "balance": 4980,
+                "date": "2019-08-22"
+            },
+            {
+                "amount": 100,
+                "beneficiaryAccountNumber": "12340987654321",
+                "transactionType": "DEBIT",
+                "balance": 4900,
+                "date": "2019-08-22"
+            }
+        ]
+    }
+
 ### Test Snippets
 
 #### AccountResourceTest

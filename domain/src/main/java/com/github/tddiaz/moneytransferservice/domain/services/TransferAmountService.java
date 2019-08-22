@@ -13,14 +13,14 @@ import java.util.List;
 import java.util.Objects;
 
 @RequiredArgsConstructor
-public class AmountTransferService {
+public class TransferAmountService {
 
     private final AccountRepository accountRepository;
 
-    public Account transferAmount(AccountNumber payeeAccountNumber, Amount amountToDebitFromPayee,
+    public Account transferAmount(AccountNumber payeeAccountNumber, Amount amountToDebitToPayee,
                                   AccountNumber beneficiaryAccountNumber, Amount AmountToCreditToBeneficiary) {
         Validate.requireNonNull(payeeAccountNumber, "payeeAccountNumber should not be null");
-        Validate.requireNonNull(amountToDebitFromPayee, "amountToDebitFromPayee should not be null");
+        Validate.requireNonNull(amountToDebitToPayee, "amountToDebitToPayee should not be null");
         Validate.requireNonNull(beneficiaryAccountNumber, "beneficiaryAccountNumber should not be null");
         Validate.requireNonNull(AmountToCreditToBeneficiary, "AmountToCreditToBeneficiary should not be null");
 
@@ -41,7 +41,7 @@ public class AmountTransferService {
 
             synchronized (lockedAccount1) {
                 synchronized (lockedAccount2) {
-                    payeeAccount.debitAmount(amountToDebitFromPayee, beneficiaryAccountNumber);
+                    payeeAccount.debitAmount(amountToDebitToPayee, beneficiaryAccountNumber);
                     beneficiaryAccount.creditAmount(AmountToCreditToBeneficiary, payeeAccountNumber);
 
                     accountRepository.save(List.of(payeeAccount, beneficiaryAccount));

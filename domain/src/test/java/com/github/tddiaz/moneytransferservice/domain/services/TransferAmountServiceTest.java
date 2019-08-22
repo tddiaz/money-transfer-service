@@ -26,13 +26,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class AmountTransferServiceTest {
+public class TransferAmountServiceTest {
 
     @Mock
     private AccountRepository accountRepository;
 
     @InjectMocks
-    private AmountTransferService amountTransferService;
+    private TransferAmountService transferAmountService;
 
     private static final Amount AMOUNT_TO_DEBIT = Amount.of(BigDecimal.TEN, Currency.of("USD"));
     private static final Amount AMOUNT_TO_CREDIT = Amount.of(BigDecimal.TEN, Currency.of("USD"));
@@ -41,7 +41,7 @@ public class AmountTransferServiceTest {
 
     @Test(expected = AmountTransferException.class)
     public void givenSameAccountNumber_whenTransferAmount_shouldThrowError() {
-        amountTransferService.transferAmount(PAYEE_ACCOUNT_NUMBER, AMOUNT_TO_DEBIT, PAYEE_ACCOUNT_NUMBER, AMOUNT_TO_CREDIT);
+        transferAmountService.transferAmount(PAYEE_ACCOUNT_NUMBER, AMOUNT_TO_DEBIT, PAYEE_ACCOUNT_NUMBER, AMOUNT_TO_CREDIT);
     }
 
     @Test(expected = AmountTransferException.class)
@@ -49,7 +49,7 @@ public class AmountTransferServiceTest {
         when(accountRepository.findByAccountNumber(eq(PAYEE_ACCOUNT_NUMBER)))
                 .thenReturn(Optional.empty());
 
-        amountTransferService.transferAmount(PAYEE_ACCOUNT_NUMBER, AMOUNT_TO_DEBIT, BENEFICIARY_ACCOUNT_NUMBER, AMOUNT_TO_CREDIT);
+        transferAmountService.transferAmount(PAYEE_ACCOUNT_NUMBER, AMOUNT_TO_DEBIT, BENEFICIARY_ACCOUNT_NUMBER, AMOUNT_TO_CREDIT);
     }
 
     @Test(expected = AmountTransferException.class)
@@ -60,7 +60,7 @@ public class AmountTransferServiceTest {
         when(accountRepository.findByAccountNumber(eq(BENEFICIARY_ACCOUNT_NUMBER)))
                 .thenReturn(Optional.empty());
 
-        amountTransferService.transferAmount(PAYEE_ACCOUNT_NUMBER, AMOUNT_TO_DEBIT, BENEFICIARY_ACCOUNT_NUMBER, AMOUNT_TO_CREDIT);
+        transferAmountService.transferAmount(PAYEE_ACCOUNT_NUMBER, AMOUNT_TO_DEBIT, BENEFICIARY_ACCOUNT_NUMBER, AMOUNT_TO_CREDIT);
     }
 
     @Test(expected = AmountTransferException.class)
@@ -74,7 +74,7 @@ public class AmountTransferServiceTest {
         when(accountRepository.findByAccountNumber(BENEFICIARY_ACCOUNT_NUMBER))
                 .thenReturn(Optional.of(beneficiaryAccount));
 
-        amountTransferService.transferAmount(PAYEE_ACCOUNT_NUMBER, AMOUNT_TO_DEBIT, BENEFICIARY_ACCOUNT_NUMBER, AMOUNT_TO_CREDIT);
+        transferAmountService.transferAmount(PAYEE_ACCOUNT_NUMBER, AMOUNT_TO_DEBIT, BENEFICIARY_ACCOUNT_NUMBER, AMOUNT_TO_CREDIT);
     }
 
     @Test
@@ -87,7 +87,7 @@ public class AmountTransferServiceTest {
         when(accountRepository.findByAccountNumber(BENEFICIARY_ACCOUNT_NUMBER))
                 .thenReturn(Optional.of(beneficiaryAccount));
 
-        var account = amountTransferService.transferAmount(PAYEE_ACCOUNT_NUMBER, AMOUNT_TO_DEBIT, BENEFICIARY_ACCOUNT_NUMBER, AMOUNT_TO_CREDIT);
+        var account = transferAmountService.transferAmount(PAYEE_ACCOUNT_NUMBER, AMOUNT_TO_DEBIT, BENEFICIARY_ACCOUNT_NUMBER, AMOUNT_TO_CREDIT);
 
         Assertions.assertThat(account).isEqualTo(payeeAccount);
         verify(payeeAccount).debitAmount(AMOUNT_TO_DEBIT, BENEFICIARY_ACCOUNT_NUMBER);

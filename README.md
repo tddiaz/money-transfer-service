@@ -116,8 +116,18 @@ This will test and package the application and will run the executable jar
         ]
     }
 
-### Test Snippets
 
+### Test Data
+Preloaded data to play around with
+
+    Account.of(AccountNumber.of("12340987654321"), Currency.of("GBP"), BigDecimal.valueOf(5000))
+    Account.of(AccountNumber.of("09876543214321"), Currency.of("GBP"), BigDecimal.valueOf(5000))
+    Account.of(AccountNumber.of("78901234567890"), Currency.of("USD"), BigDecimal.valueOf(5000))
+    
+Go to `money-transfer-service/app/src/main/java/com/github/tddiaz/moneytransferservice/app/DataBootstrap.java` class to add/modify the preloaded data 
+
+
+### Test Snippets
 #### AccountResourceTest
 
     @Test

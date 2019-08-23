@@ -7,6 +7,7 @@ import com.github.tddiaz.moneytransferservice.domain.models.AccountNumber;
 import com.github.tddiaz.moneytransferservice.domain.models.Amount;
 import com.github.tddiaz.moneytransferservice.domain.models.Currency;
 import com.github.tddiaz.moneytransferservice.domain.repositories.AccountRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(ConcurrentTestRunner.class)
+@Slf4j
 public class TransferAmountServiceConcurrencyTest {
 
     private TransferAmountService transferAmountService;
@@ -31,27 +33,29 @@ public class TransferAmountServiceConcurrencyTest {
     }
 
     @Test
-    @ThreadCount(50)
-    public void test1_payeeAs12340987654321_beneficiaryAs09876543214321() {
-        var payee = AccountNumber.of("12340987654321");
-        var amountToDebit = Amount.of(BigDecimal.valueOf(100L), Currency.of("GBP"));
-        var beneficiary = AccountNumber.of("09876543214321");
-        var amountToCredit = Amount.of(BigDecimal.valueOf(100L), Currency.of("GBP"));
+    @ThreadCount(100)
+    public void testDeadlock() {
 
-        transferAmountService.transferAmount(payee, amountToDebit, beneficiary, amountToCredit);
+        {
+            var payee = AccountNumber.of("12340987654321");
+            var amountToDebit = Amount.of(BigDecimal.valueOf(100L), Currency.of("GBP"));
+            var beneficiary = AccountNumber.of("09876543214321");
+            var amountToCredit = Amount.of(BigDecimal.valueOf(100L), Currency.of("GBP"));
+
+            transferAmountService.transferAmount(payee, amountToDebit, beneficiary, amountToCredit);
+        }
+
+
+        {
+            var payee = AccountNumber.of("09876543214321");
+            var amountToDebit = Amount.of(BigDecimal.valueOf(100L), Currency.of("GBP"));
+            var beneficiary = AccountNumber.of("12340987654321");
+            var amountToCredit = Amount.of(BigDecimal.valueOf(100L), Currency.of("GBP"));
+
+            transferAmountService.transferAmount(payee, amountToDebit, beneficiary, amountToCredit);
+        }
+
     }
-
-    @Test
-    @ThreadCount(50)
-    public void test2_payeeAs09876543214321_beneficiaryAs12340987654321() {
-        var payee = AccountNumber.of("09876543214321");
-        var amountToDebit = Amount.of(BigDecimal.valueOf(100L), Currency.of("GBP"));
-        var beneficiary = AccountNumber.of("12340987654321");
-        var amountToCredit = Amount.of(BigDecimal.valueOf(100L), Currency.of("GBP"));
-
-        transferAmountService.transferAmount(payee, amountToDebit, beneficiary, amountToCredit);
-    }
-
 
     @After
     public void testCount() {
@@ -69,7 +73,6 @@ public class TransferAmountServiceConcurrencyTest {
         private AccountRepositoryImpl() {
             ACCOUNTS.put("12340987654321", Account.of(AccountNumber.of("12340987654321"), Currency.of("GBP"), BigDecimal.valueOf(5000)));
             ACCOUNTS.put("09876543214321", Account.of(AccountNumber.of("09876543214321"), Currency.of("GBP"), BigDecimal.valueOf(5000)));
-            ACCOUNTS.put("78901234567890", Account.of(AccountNumber.of("78901234567890"), Currency.of("USD"), BigDecimal.valueOf(5000)));
         }
 
         @Override

@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.Objects;
 
+import static java.lang.System.identityHashCode;
+
 @RequiredArgsConstructor
 public class TransferAmountService {
 
@@ -32,8 +34,8 @@ public class TransferAmountService {
 
         try {
 
-            var lockedAccount1 = payeeAccount.hashCode() > beneficiaryAccount.hashCode() ? payeeAccount : beneficiaryAccount;
-            var lockedAccount2 = payeeAccount.hashCode() > beneficiaryAccount.hashCode() ? beneficiaryAccount : payeeAccount;
+            var lockedAccount1 = identityHashCode(payeeAccount) > identityHashCode(beneficiaryAccount) ? payeeAccount : beneficiaryAccount;
+            var lockedAccount2 = identityHashCode(payeeAccount) > identityHashCode(beneficiaryAccount) ? beneficiaryAccount : payeeAccount;
 
             synchronized (lockedAccount1) {
                 synchronized (lockedAccount2) {

@@ -212,3 +212,17 @@ domain/target/test-report/index.html
 
         verify(accountService).transferAmount(eq(payload));
     }
+
+### Challenge Feedback 
+#### Positive Comments (Pros)
+* Executable jar is generated.
+* Nice documentation.
+* Great test coverage.
+* Concurrency test is present.
+* BigDecimal for money.
+* Locked accounts in proper order to prevent deadlocks.
+* Code is easy to read.
+* Major negative cases are covered.
+
+#### Negative Comments (Cons)
+* Used synchronized instead of locks.
